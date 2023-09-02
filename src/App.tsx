@@ -13,7 +13,19 @@ function App() {
   const addTaskFunc = (e: React.FormEvent) => {
     e.preventDefault();
     if (task) {
-      setTasks([...tasks, { id: Date.now(), name: task, isDone: false }]);
+      setTasks([
+        ...tasks,
+        {
+          _id: Date.now(),
+          title: task,
+          description: "",
+          startDate: new Date(),
+          dueDate: new Date(),
+          organization: "",
+          priority: 1,
+          status: 1,
+        },
+      ]);
       setTask("");
     }
   };
@@ -25,9 +37,10 @@ function App() {
     // If there is 1 element then no need div element
     // If there are many elements, there must be a div tag outside
     <div className="App">
-      <h2 className="App-title">To-do list app</h2>
+      <h2 className="App-title">Task Management</h2>
       <p>Count: {count} </p>
-      <AddTask task={task} setTask={setTask} addTaskFunc={addTaskFunc} />
+      {/* task={task} setTask={setTask} addTaskFunc={addTaskFunc} */}
+      <AddTask />
       <TaskList tasks={tasks} setTasks={setTasks} />
     </div>
   );
