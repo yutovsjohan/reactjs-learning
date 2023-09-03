@@ -12,22 +12,22 @@ function App() {
 
   const addTaskFunc = (e: React.FormEvent) => {
     e.preventDefault();
-    if (task) {
-      setTasks([
-        ...tasks,
-        {
-          _id: Date.now(),
-          title: task,
-          description: "",
-          startDate: new Date(),
-          dueDate: new Date(),
-          organization: "",
-          priority: 1,
-          status: 1,
-        },
-      ]);
-      setTask("");
-    }
+    // if (task) {
+    //   setTasks([
+    //     ...tasks,
+    //     {
+    //       _id: Date.now(),
+    //       title: task,
+    //       description: "",
+    //       startDate: new Date(),
+    //       dueDate: new Date(),
+    //       organization: "",
+    //       priority: 1,
+    //       status: 1,
+    //     },
+    //   ]);
+    //   setTask("");
+    // }
   };
 
   count = tasks.length;
@@ -41,7 +41,7 @@ function App() {
       <p>Count: {count} </p>
       {/* task={task} setTask={setTask} addTaskFunc={addTaskFunc} */}
       <AddTask />
-      <TaskList tasks={tasks} setTasks={setTasks} />
+      <TaskList />
     </div>
   );
 }

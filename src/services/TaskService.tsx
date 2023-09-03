@@ -2,10 +2,14 @@ import WixBaseService from "./WixBaseService";
 
 class TaskService extends WixBaseService {
   getCollectionName(): string {
-    return "task";
+    return process.env.TASK_COLLECTION_NAME
+      ? process.env.TASK_COLLECTION_NAME
+      : "";
   }
   getAuthorization(): string {
-    return "wixcode-pub.434ebf8bbd0edb8f14d1b71694e22ac6f082e5bc.eyJpbnN0YW5jZUlkIjoiNjgxYzc3NjYtNTIyNS00OTgzLWExM2EtMTAwNDRjNzUwYzQ2IiwiaHRtbFNpdGVJZCI6IjA5MDk2Njc4LTVmYjktNDVlMS1iN2NjLWQxMmNlYTE5ZTA3NCIsInVpZCI6IjFlOGYyNWViLThjMTktNDc1OC1iZTlkLWRjMTE1MjNlNDFjYyIsInBlcm1pc3Npb25zIjoiT1dORVIiLCJpc1RlbXBsYXRlIjpmYWxzZSwic2lnbkRhdGUiOjE2OTM2NTgxMjIxNTYsImFpZCI6bnVsbCwiYXBwRGVmSWQiOiJDbG91ZFNpdGVFeHRlbnNpb24iLCJpc0FkbWluIjp0cnVlLCJtZXRhU2l0ZUlkIjoiYzgzZTcxZTEtYjU4My00NzExLWIxYzYtNGY0MzJjYTQ1NTY2IiwiY2FjaGUiOm51bGwsImV4cGlyYXRpb25EYXRlIjpudWxsLCJwcmVtaXVtQXNzZXRzIjpudWxsLCJ0ZW5hbnQiOm51bGwsInNpdGVPd25lcklkIjoiMWU4ZjI1ZWItOGMxOS00NzU4LWJlOWQtZGMxMTUyM2U0MWNjIiwiaW5zdGFuY2VUeXBlIjoicHViIiwic2l0ZU1lbWJlcklkIjoiMWU4ZjI1ZWItOGMxOS00NzU4LWJlOWQtZGMxMTUyM2U0MWNjIiwicGVybWlzc2lvblNjb3BlIjpudWxsLCJsb2dpbkFjY291bnRJZCI6bnVsbH0=";
+    return process.env.TASK_COLLECTION_AUTHORIZATION
+      ? process.env.TASK_COLLECTION_AUTHORIZATION
+      : "";
   }
 }
 

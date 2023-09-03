@@ -7,6 +7,7 @@ abstract class WixBaseService implements IWixService {
   url = {
     query: this.baseUrl + "query",
     save: this.baseUrl + "bulk-save",
+    delete: this.baseUrl + "bulk-remove",
   };
 
   get(): Promise<any> {
@@ -38,6 +39,28 @@ abstract class WixBaseService implements IWixService {
           {
             collectionName: this.getCollectionName(),
             items: items,
+          },
+          this.buildDefaultHeaders(this.getAuthorization())
+        )
+        .then((rs) => {
+          resolve(rs);
+        })
+        .catch((error) => {
+          {
+            reject(error);
+          }
+        });
+    });
+  }
+
+  delete(entries: [{ itemId: string }]) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(
+          this.url.delete,
+          {
+            collectionName: this.getCollectionName(),
+            entries: entries,
           },
           this.buildDefaultHeaders(this.getAuthorization())
         )

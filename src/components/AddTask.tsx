@@ -62,14 +62,6 @@ class AddTask extends React.Component {
             openErrorPanel: true,
           });
         });
-      this.taskService
-        .get()
-        .then((response: any) => {
-          console.info(response);
-        })
-        .catch((error: any) => {
-          console.error(error);
-        });
     }
   };
 
