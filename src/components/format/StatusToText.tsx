@@ -1,4 +1,4 @@
-import { Status } from "../../enums/Status";
+import { Status } from "../../constants/Consts";
 
 interface Props {
   value: number;
@@ -6,14 +6,14 @@ interface Props {
 
 const StatusToText = ({ value }: Props) => {
   switch (value) {
-    case Status.READY_FOR_DEV:
-      return <span>Ready for dev</span>;
-    case Status.IN_PROGRESS:
-      return <span>In-progress</span>;
-    case Status.QA:
-      return <span>Q/A</span>;
-    case Status.DONE:
-      return <span>Done</span>;
+    case Status.READY_FOR_DEV.value:
+      return <span>{Status.READY_FOR_DEV.text}</span>;
+    case Status.IN_PROGRESS.value:
+      return <span>{Status.IN_PROGRESS.text}</span>;
+    case Status.QA.value:
+      return <span>{Status.QA.text}</span>;
+    case Status.DONE.value:
+      return <span>{Status.DONE.text}</span>;
     default:
       return <></>;
   }

@@ -9,16 +9,17 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import TaskService from "../services/TaskService";
 import SearchIcon from "@mui/icons-material/Search";
 import Grid from "@mui/material/Grid";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import CancelIcon from "@mui/icons-material/Cancel";
-import PriorityToText from "./format/PriorityToText";
-import StatusToText from "./format/StatusToText";
-import Consts from "../constants/Consts";
-import DateFormatted from "./format/DateFormatted";
+import Consts from "../../constants/Consts";
+import TaskService from "../../services/TaskService";
+import DateFormatted from "../format/DateFormatted";
+import PriorityToText from "../format/PriorityToText";
+import StatusToText from "../format/StatusToText";
+import "../../styles/Task.css";
 
 class TaskList extends React.Component {
   taskService = new TaskService();
@@ -151,11 +152,13 @@ class TaskList extends React.Component {
           item.priority = parseInt(item.priority);
           item.status = parseInt(item.status);
         });
-        this.setState({ tasks: items, isLoading: false });
-        console.info(items);
+        this.setState({ tasks: items });
       })
       .catch((error: any) => {
         console.error(error);
+      })
+      .finally(() => {
+        this.setState({ isLoading: false });
       });
   };
 
@@ -179,10 +182,10 @@ class TaskList extends React.Component {
       .catch((error: any) => {
         console.error(error);
       });
-    this.handleCancelDelete();
+    this.handleCloseDialog();
   };
 
-  handleCancelDelete = () => {
+  handleCloseDialog = () => {
     this.setState({
       isLoading: false,
       isOpenDeleteConfirmDialog: false,
@@ -194,13 +197,24 @@ class TaskList extends React.Component {
     return (
       <div className="task-list">
         <Grid container spacing={2} className="form-button-group">
-          <Grid item xs={4} sm={3} md={2} lg={2}>
+          <Grid item xs={2} sm={2} md={2} lg={1}>
+            <h4>Task List</h4>
+          </Grid>
+          <Grid item xs={4} sm={3} md={2} lg={2} className="align-self-center">
             <Button variant="outlined" fullWidth startIcon={<AddIcon />}>
               Add
             </Button>
           </Grid>
-          <Grid item xs={4} sm={6} md={8} lg={8}></Grid>
-          <Grid item xs={4} sm={3} md={2} lg={2} justifyContent="flex-end">
+          <Grid item xs={2} sm={4} md={6} lg={7}></Grid>
+          <Grid
+            item
+            xs={4}
+            sm={3}
+            md={2}
+            lg={2}
+            justifyContent="flex-end"
+            className="align-self-center"
+          >
             <Button
               variant="outlined"
               fullWidth
@@ -211,8 +225,6 @@ class TaskList extends React.Component {
             </Button>
           </Grid>
         </Grid>
-
-        <h4>Task List</h4>
 
         <div>
           <DataGrid
@@ -230,7 +242,7 @@ class TaskList extends React.Component {
           />
           <Dialog
             open={this.state.isOpenDeleteConfirmDialog}
-            onClose={() => this.handleCancelDelete()}
+            onClose={() => this.handleCloseDialog()}
           >
             <DialogTitle>Confirm Delete</DialogTitle>
             <DialogContent>
@@ -248,7 +260,7 @@ class TaskList extends React.Component {
               <Button
                 variant="outlined"
                 startIcon={<CancelIcon />}
-                onClick={() => this.handleCancelDelete()}
+                onClick={() => this.handleCloseDialog()}
               >
                 Cancel
               </Button>

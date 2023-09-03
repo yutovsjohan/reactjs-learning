@@ -3,16 +3,20 @@ import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import CancelIcon from "@mui/icons-material/Cancel";
 import SaveIcon from "@mui/icons-material/Save";
-import TaskService from "../services/TaskService";
+import TaskService from "../../services/TaskService";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Collapse from "@mui/material/Collapse";
-import { Task } from "../model/Task";
+import { Task } from "../../model/Task";
+import InputText from "../form/InputText";
+import InputDate from "../form/InputDate";
+import SelectOption from "../form/SelectOption";
+import { Priority, Status } from "../../constants/Consts";
 
 class AddTask extends React.Component {
   taskService = new TaskService();
   rows: number = 10;
-  today = new Date().toJSON().substr(0, 10);
+  today = new Date().toJSON().substring(0, 10);
 
   state = {
     title: "",
@@ -20,8 +24,8 @@ class AddTask extends React.Component {
     startDate: this.today,
     dueDate: this.today,
     organization: "",
-    priority: 1,
-    status: 1,
+    priority: "1",
+    status: "1",
     errors: [],
     openErrorPanel: false,
   };
@@ -41,8 +45,8 @@ class AddTask extends React.Component {
         startDate: new Date(this.state.startDate),
         dueDate: new Date(this.state.dueDate),
         organization: this.state.organization,
-        priority: this.state.priority,
-        status: this.state.status,
+        priority: parseInt(this.state.priority),
+        status: parseInt(this.state.status),
         description: this.state.description,
       };
 
@@ -50,6 +54,7 @@ class AddTask extends React.Component {
         .save([task])
         .then((response: any) => {
           console.info(response);
+          // TODO: handle back task list page
         })
         .catch((error: any) => {
           console.error(error);
@@ -70,7 +75,7 @@ class AddTask extends React.Component {
     let isValid = true;
     let errors: any[] = [];
 
-    if (!title) {
+    if (!title || !title.trim().length) {
       isValid = false;
       errors.push("Title is required");
     }
@@ -85,7 +90,7 @@ class AddTask extends React.Component {
       errors.push("Due date is required");
     }
 
-    if (!organization) {
+    if (!organization || !organization.trim().length) {
       isValid = false;
       errors.push("Organization is required");
     }
@@ -108,84 +113,61 @@ class AddTask extends React.Component {
         <form>
           <Grid container spacing={2}>
             <Grid className="form-item" item xs={12} sm={6} md={4} lg={4}>
-              <label htmlFor="title">Title</label>
-              <input
-                type="text"
-                id="title"
-                name="title"
+              <InputText
+                name={"title"}
+                label={"Title"}
                 value={this.state.title}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
+                required
+                onChange={(e) => this.handleChange(e)}
               />
             </Grid>
             <Grid className="form-item" item xs={12} sm={6} md={4} lg={4}>
-              <label htmlFor="organization">Organization</label>
-              <input
-                type="text"
-                id="organization"
-                name="organization"
+              <InputText
+                name={"organization"}
+                label={"Organization"}
                 value={this.state.organization}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
+                required
+                onChange={(e) => this.handleChange(e)}
               />
             </Grid>
             <Grid className="form-item" item xs={12} sm={6} md={4} lg={4}>
-              <label htmlFor="priority">Priority</label>
-              <select
-                id="priority"
-                name="priority"
+              <SelectOption
+                name={"priority"}
+                label={"Priority"}
                 value={this.state.priority}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
-              >
-                <option value={1}>LOW</option>
-                <option value={2}>MEDIUM</option>
-                <option value={3}>HIGH</option>
-              </select>
+                options={Priority}
+                required
+                onChange={(e) => this.handleChange(e)}
+              />
             </Grid>
 
             <Grid className="form-item" item xs={12} sm={6} md={4} lg={4}>
-              <label htmlFor="startDate">Start Date</label>
-              <input
-                type="date"
-                id="startDate"
-                name="startDate"
+              <InputDate
+                name={"startDate"}
+                label={"Start Date"}
                 value={this.state.startDate}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
+                required
+                onChange={(e) => this.handleChange(e)}
               />
             </Grid>
             <Grid className="form-item" item xs={12} sm={6} md={4} lg={4}>
-              <label htmlFor="dueDate">Due Date</label>
-              <input
-                type="date"
-                id="dueDate"
-                name="dueDate"
+              <InputDate
+                name={"dueDate"}
+                label={"Due Date"}
                 value={this.state.dueDate}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
+                required
+                onChange={(e) => this.handleChange(e)}
               />
             </Grid>
             <Grid className="form-item" item xs={12} sm={6} md={4} lg={4}>
-              <label htmlFor="status">Status</label>
-              <select
-                id="status"
-                name="status"
+              <SelectOption
+                name={"status"}
+                label={"Status"}
                 value={this.state.status}
-                onChange={(e) => {
-                  this.handleChange(e);
-                }}
-              >
-                <option value={1}>Ready for dev</option>
-                <option value={2}>In-progress</option>
-                <option value={3}>Q/A</option>
-                <option value={4}>Done</option>
-              </select>
+                options={Status}
+                required
+                onChange={(e) => this.handleChange(e)}
+              />
             </Grid>
             <Grid className="form-item" item xs={12} sm={12} md={12} lg={12}>
               <label htmlFor="description">Description</label>

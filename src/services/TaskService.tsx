@@ -2,13 +2,13 @@ import WixBaseService from "./WixBaseService";
 
 class TaskService extends WixBaseService {
   getCollectionName(): string {
-    return process.env.TASK_COLLECTION_NAME
-      ? process.env.TASK_COLLECTION_NAME
+    return process.env.REACT_APP_TASK_COLLECTION_NAME
+      ? process.env.REACT_APP_TASK_COLLECTION_NAME
       : "";
   }
   getAuthorization(): string {
-    return process.env.TASK_COLLECTION_AUTHORIZATION
-      ? process.env.TASK_COLLECTION_AUTHORIZATION
+    return process.env.REACT_APP_TASK_COLLECTION_AUTHORIZATION
+      ? process.env.REACT_APP_TASK_COLLECTION_AUTHORIZATION
       : "";
   }
 }

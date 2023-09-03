@@ -1,4 +1,4 @@
-import { Priority } from "../../enums/Priority";
+import { Priority } from "../../constants/Consts";
 
 interface Props {
   value: number;
@@ -6,12 +6,14 @@ interface Props {
 
 const PriorityToText = ({ value }: Props) => {
   switch (value) {
-    case Priority.LOW:
-      return <strong style={{ color: "green" }}>LOW</strong>;
-    case Priority.MEDIUM:
-      return <strong style={{ color: "orange" }}>MEDIUM</strong>;
-    case Priority.HIGH:
-      return <strong style={{ color: "red" }}>HIGH</strong>;
+    case Priority.LOW.value:
+      return <strong style={{ color: "green" }}>{Priority.LOW.text}</strong>;
+    case Priority.MEDIUM.value:
+      return (
+        <strong style={{ color: "orange" }}>{Priority.MEDIUM.text}</strong>
+      );
+    case Priority.HIGH.value:
+      return <strong style={{ color: "red" }}>{Priority.HIGH.text}</strong>;
     default:
       return <> </>;
   }
