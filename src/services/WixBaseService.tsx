@@ -1,23 +1,23 @@
 import IWixService from "./IWixService";
 import axios from "axios";
+import WixRequestBody from "../model/WixRequestBody";
 
 abstract class WixBaseService implements IWixService {
   baseUrl =
     "https://yutovsjohan.wixsite.com/_api/cloud-data/v1/wix-data/collections/";
   url = {
-    query: this.baseUrl + "query",
+    getAll: this.baseUrl + "query",
+    get: this.baseUrl + "get",
     save: this.baseUrl + "bulk-save",
     delete: this.baseUrl + "bulk-remove",
   };
 
-  get(): Promise<any> {
+  getAll(body?: WixRequestBody): Promise<any> {
     return new Promise((resolve, reject) => {
       axios
         .post(
-          this.url.query,
-          {
-            collectionName: this.getCollectionName(),
-          },
+          this.url.getAll,
+          body ? body : this.buildDefaultRequestBody(this.getCollectionName()),
           this.buildDefaultHeaders(this.getAuthorization())
         )
         .then((rs) => {
@@ -27,6 +27,23 @@ abstract class WixBaseService implements IWixService {
           reject(error);
         });
     });
+  }
+
+  getById(id: string | undefined): Promise<any> {
+    const body: WixRequestBody = new WixRequestBody();
+    body.collectionName = this.getCollectionName();
+
+    body.dataQuery = {
+      filter: {
+        _id: id,
+      },
+      paging: {
+        offset: 0,
+        limit: 1000,
+      },
+    };
+
+    return this.getAll(body);
   }
 
   save(items: any[]): Promise<any> {
@@ -76,6 +93,21 @@ abstract class WixBaseService implements IWixService {
         authorization: authorization,
       },
     };
+  }
+
+  buildDefaultRequestBody(collectionName: string): WixRequestBody {
+    const body: WixRequestBody = new WixRequestBody();
+    body.collectionName = collectionName;
+
+    body.dataQuery = {
+      filter: {},
+      paging: {
+        offset: 0,
+        limit: 1000,
+      },
+    };
+
+    return body;
   }
 
   abstract getCollectionName(): string;

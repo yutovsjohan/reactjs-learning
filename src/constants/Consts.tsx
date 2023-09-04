@@ -1,5 +1,6 @@
 export default class Consts {
   static FORMAT_DATE_DD_MM_YY: string = "dd/MM/yyyy";
+  static FORMAT_DATE_YYYY_MM_DD: string = "yyyy-MM-dd";
 }
 
 export const Status = {

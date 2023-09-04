@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -11,8 +11,9 @@ import { Task } from "../../model/Task";
 import InputText from "../form/InputText";
 import InputDate from "../form/InputDate";
 import SelectOption from "../form/SelectOption";
-import { Priority, Status } from "../../constants/Consts";
-import { Link, useNavigate } from "react-router-dom";
+import Consts, { Priority, Status } from "../../constants/Consts";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { format } from "date-fns";
 
 interface Props {
   editMode: boolean;
@@ -24,6 +25,7 @@ const AddEditTask = ({ editMode }: Props) => {
   const rows: number = 10;
   const navigate = useNavigate();
   const [state, setState] = useState({
+    _id: "",
     title: "",
     description: "",
     startDate: today,
@@ -34,11 +36,44 @@ const AddEditTask = ({ editMode }: Props) => {
     errors: [""],
     openErrorPanel: false,
     disabledButton: false,
+    isLoading: false,
   });
+  const { taskId } = useParams();
 
-  if (editMode) {
-    //TODO
-  }
+  useEffect(() => {
+    if (editMode && !state.isLoading) {
+      setState({ ...state, isLoading: true });
+      taskService
+        .getById(taskId)
+        .then((response: any) => {
+          let items = response.data.items;
+          if (items.length) {
+            let item = items[0];
+            setState({
+              ...state,
+              _id: item._id,
+              title: item.title,
+              description: item.description,
+              startDate: format(
+                new Date(item.startDate as string),
+                Consts.FORMAT_DATE_YYYY_MM_DD
+              ),
+              dueDate: format(
+                new Date(item.dueDate as string),
+                Consts.FORMAT_DATE_YYYY_MM_DD
+              ),
+              organization: item.organization,
+              priority: item.priority,
+              status: item.status,
+              isLoading: false,
+            });
+          }
+        })
+        .catch((error: any) => {
+          console.error(error);
+        });
+    }
+  }, []);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -65,10 +100,13 @@ const AddEditTask = ({ editMode }: Props) => {
         description: state.description,
       };
 
+      if (editMode) {
+        task._id = state._id;
+      }
+
       taskService
         .save([task])
         .then((response: any) => {
-          console.info(response);
           navigate("/");
         })
         .catch((error: any) => {

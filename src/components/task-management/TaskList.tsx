@@ -30,7 +30,7 @@ const TaskList = () => {
     isOpenDeleteConfirmDialog: false,
     deleteId: "",
     disabledButton: false,
-    firstLoading: true,
+    firstLoading: false,
   });
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -155,7 +155,7 @@ const TaskList = () => {
     }
     setState({ ...state, isLoading: true, disabledButton: true });
     taskService
-      .get()
+      .getAll()
       .then((response: any) => {
         let items = response.data.items;
         items.map((item: any) => {
@@ -184,7 +184,6 @@ const TaskList = () => {
     taskService
       .delete(entries)
       .then((response: any) => {
-        console.info(response);
         handleSearch();
       })
       .catch((error: any) => {

@@ -12,9 +12,9 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <RouterComponent>
+  <RouterComponent>
+    <React.StrictMode>
       <Provider store={reduxStore} children={undefined}></Provider>
-    </RouterComponent>
-  </React.StrictMode>
+    </React.StrictMode>
+  </RouterComponent>
 );
