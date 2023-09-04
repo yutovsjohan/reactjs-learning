@@ -14,6 +14,8 @@ import SelectOption from "../form/SelectOption";
 import Consts, { Priority, Status } from "../../constants/Consts";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
+import { useSelector, useDispatch } from "react-redux";
+import { draft } from "../../redux/reducers/TaskReducer";
 
 interface Props {
   editMode: boolean;
@@ -37,47 +39,60 @@ const AddEditTask = ({ editMode }: Props) => {
     openErrorPanel: false,
     disabledButton: false,
     isLoading: false,
+    isDraft: false,
   });
   const { taskId } = useParams();
 
+  const dispatch = useDispatch();
+  const stateRedux = useSelector((e: any) => e.task);
+
   useEffect(() => {
-    if (editMode && !state.isLoading) {
-      setState({ ...state, isLoading: true });
-      taskService
-        .getById(taskId)
-        .then((response: any) => {
-          let items = response.data.items;
-          if (items.length) {
-            let item = items[0];
-            setState({
-              ...state,
-              _id: item._id,
-              title: item.title,
-              description: item.description,
-              startDate: format(
-                new Date(item.startDate as string),
-                Consts.FORMAT_DATE_YYYY_MM_DD
-              ),
-              dueDate: format(
-                new Date(item.dueDate as string),
-                Consts.FORMAT_DATE_YYYY_MM_DD
-              ),
-              organization: item.organization,
-              priority: item.priority,
-              status: item.status,
-              isLoading: false,
-            });
-          }
-        })
-        .catch((error: any) => {
-          console.error(error);
-        });
+    if (editMode) {
+      if (stateRedux.edit.isDraft && stateRedux.edit._id === taskId) {
+        console.info("stateRedux: ", stateRedux);
+        setState(stateRedux.edit);
+      } else {
+        setState({ ...state, isLoading: true });
+        taskService
+          .getById(taskId)
+          .then((response: any) => {
+            let items = response.data.items;
+            if (items.length) {
+              let item = items[0];
+              setState({
+                ...state,
+                _id: item._id,
+                title: item.title,
+                description: item.description,
+                startDate: format(
+                  new Date(item.startDate as string),
+                  Consts.FORMAT_DATE_YYYY_MM_DD
+                ),
+                dueDate: format(
+                  new Date(item.dueDate as string),
+                  Consts.FORMAT_DATE_YYYY_MM_DD
+                ),
+                organization: item.organization,
+                priority: item.priority,
+                status: item.status,
+                isLoading: false,
+              });
+            }
+          })
+          .catch((error: any) => {
+            console.error(error);
+          });
+      }
+    } else {
+      if (stateRedux.add.isDraft) {
+        setState(stateRedux.add);
+      }
     }
   }, []);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setState({ ...state, [name]: value });
+    setState({ ...state, [name]: value, isDraft: true });
   };
 
   const handleSave = (e: React.FormEvent) => {
@@ -282,6 +297,9 @@ const AddEditTask = ({ editMode }: Props) => {
                 startIcon={<CancelIcon />}
                 fullWidth
                 disabled={state.disabledButton}
+                onClick={() => {
+                  dispatch(draft({ editMode: editMode, data: state }));
+                }}
               >
                 Cancel
               </Button>

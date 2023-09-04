@@ -5,9 +5,7 @@ export default class Header extends React.Component {
   render() {
     return (
       <div className="header-nav">
-        <Link to="/" className="active">
-          Task Management
-        </Link>
+        <a className="active">Task Management</a>
       </div>
     );
   }
