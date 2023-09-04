@@ -14,7 +14,11 @@ import SelectOption from "../form/SelectOption";
 import { Priority, Status } from "../../constants/Consts";
 import { Link, useNavigate } from "react-router-dom";
 
-const AddTask = () => {
+interface Props {
+  editMode: boolean;
+}
+
+const AddEditTask = ({ editMode }: Props) => {
   const taskService = new TaskService();
   const today = new Date().toJSON().substring(0, 10);
   const rows: number = 10;
@@ -31,6 +35,10 @@ const AddTask = () => {
     openErrorPanel: false,
     disabledButton: false,
   });
+
+  if (editMode) {
+    //TODO
+  }
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -122,7 +130,7 @@ const AddTask = () => {
   };
 
   return (
-    <div className="add-task">
+    <div className="task-information">
       <form>
         <Grid container spacing={2}>
           <Grid className="form-item" item xs={12} sm={6} md={4} lg={4}>
@@ -247,4 +255,4 @@ const AddTask = () => {
   );
 };
 
-export default AddTask;
+export default AddEditTask;

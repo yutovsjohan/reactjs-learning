@@ -21,6 +21,6 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src", "constants/**/*.tsx"
+    "src", "constants/**/*.tsx", "router/**/*.tsx",
   ]
 }
