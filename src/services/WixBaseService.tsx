@@ -24,9 +24,7 @@ abstract class WixBaseService implements IWixService {
           resolve(rs);
         })
         .catch((error) => {
-          {
-            reject(error);
-          }
+          reject(error);
         });
     });
   }
@@ -46,9 +44,7 @@ abstract class WixBaseService implements IWixService {
           resolve(rs);
         })
         .catch((error) => {
-          {
-            reject(error);
-          }
+          reject(error);
         });
     });
   }
@@ -68,9 +64,7 @@ abstract class WixBaseService implements IWixService {
           resolve(rs);
         })
         .catch((error) => {
-          {
-            reject(error);
-          }
+          reject(error);
         });
     });
   }

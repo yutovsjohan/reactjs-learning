@@ -1,3 +1,46 @@
 .App {
     margin-left: 10px;
 }
+
+.header-nav, .footer {
+    overflow: hidden;
+    background-color: #333;
+}
+
+.header-nav {
+    margin-bottom: 20px;
+}
+
+.header-nav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.header-nav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.header-nav a.active {
+    background-color: #04AA6D;
+    color: white;
+}
+
+.footer {
+    margin-top: 20px;
+}
+
+.footer div {
+    width: 100%;
+    text-align: center;
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}

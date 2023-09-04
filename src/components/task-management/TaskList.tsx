@@ -20,6 +20,7 @@ import DateFormatted from "../format/DateFormatted";
 import PriorityToText from "../format/PriorityToText";
 import StatusToText from "../format/StatusToText";
 import "../../styles/Task.css";
+import { Link } from "react-router-dom";
 
 class TaskList extends React.Component {
   taskService = new TaskService();
@@ -139,10 +140,11 @@ class TaskList extends React.Component {
     isLoading: false,
     isOpenDeleteConfirmDialog: false,
     deleteId: "",
+    disabledButton: false,
   };
 
   handleSearch = () => {
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true, disabledButton: true });
     this.taskService
       .get()
       .then((response: any) => {
@@ -151,6 +153,7 @@ class TaskList extends React.Component {
           item.id = item._id;
           item.priority = parseInt(item.priority);
           item.status = parseInt(item.status);
+          return null;
         });
         this.setState({ tasks: items });
       })
@@ -158,7 +161,7 @@ class TaskList extends React.Component {
         console.error(error);
       })
       .finally(() => {
-        this.setState({ isLoading: false });
+        this.setState({ isLoading: false, disabledButton: false });
       });
   };
 
@@ -201,9 +204,11 @@ class TaskList extends React.Component {
             <h4>Task List</h4>
           </Grid>
           <Grid item xs={4} sm={3} md={2} lg={2} className="align-self-center">
-            <Button variant="outlined" fullWidth startIcon={<AddIcon />}>
-              Add
-            </Button>
+            <Link to="/add-task">
+              <Button variant="outlined" fullWidth startIcon={<AddIcon />}>
+                Add
+              </Button>
+            </Link>
           </Grid>
           <Grid item xs={2} sm={4} md={6} lg={7}></Grid>
           <Grid
@@ -220,6 +225,7 @@ class TaskList extends React.Component {
               fullWidth
               startIcon={<SearchIcon />}
               onClick={() => this.handleSearch()}
+              disabled={this.state.disabledButton}
             >
               Search
             </Button>
